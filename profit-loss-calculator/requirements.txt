@@ -1,0 +1,15 @@
+# MT5 Profit/Loss Calculator - Dependencies
+# Core MT5 integration
+MetaTrader5>=5.0.45
+
+# Standard library dependencies (included with Python)
+# logging - for comprehensive logging
+# datetime - for timestamp handling
+# time - for delays between account processing
+# argparse - for command-line interface
+# configparser - for configuration management
+# json - for data serialization (optional)
+# sys - for system operations
+# os - for file operations
+# typing - for type hints
+# math - for mathematical operations
