@@ -62,60 +62,68 @@ ORDER_CACHE_DURATION = 30      # Order cache duration in seconds
 
 DOLLAR_PER_LOT_PER_PRICE_UNIT = {
     # AUD pairs
-    "AUDCAD": 74000.0,   # Australian Dollar / Canadian Dollar
-    "AUDCHF": 122000.0,   # Australian Dollar / Swiss Franc
-    "AUDJPY": 700.0,    # Australian Dollar / Japanese Yen
-    "AUDNZD": 65000.0,   # Australian Dollar / New Zealand Dollar
-    "AUDUSD": 100000.0,   # Australian Dollar / US Dollar
+    "AUDCAD.x": 74000.0,   # Australian Dollar / Canadian Dollar
+    "AUDCHF.x": 122000.0,   # Australian Dollar / Swiss Franc
+    "AUDJPY.x": 700.0,    # Australian Dollar / Japanese Yen
+    "AUDNZD.x": 65000.0,   # Australian Dollar / New Zealand Dollar
+    "AUDUSD.x": 100000.0,   # Australian Dollar / US Dollar
     
     # CAD pairs
-    "CADCHF": 122000.0,   # Canadian Dollar / Swiss Franc
-    "CADJPY": 700.0,    # Canadian Dollar / Japanese Yen
+    "CADCHF.x": 122000.0,   # Canadian Dollar / Swiss Franc
+    "CADJPY.x": 700.0,    # Canadian Dollar / Japanese Yen
     
     # CHF pairs
-    "CHFJPY": 700.0,      # Swiss Franc / Japanese Yen
+    "CHFJPY.x": 700.0,      # Swiss Franc / Japanese Yen
     
     # EUR pairs
-    "EURAUD": 66000.0,   # Euro / Australian Dollar
-    "EURCAD": 74000.0,   # Euro / Canadian Dollar
-    "EURCHF": 122000.0,   # Euro / Swiss Franc
-    "EURGBP": 134000.0,   # Euro / British Pound
-    "EURJPY": 700.0,    # Euro / Japanese Yen
-    "EURNZD": 60000.0,   # Euro / New Zealand Dollar
-    "EURUSD": 100000.0,   # Euro / US Dollar
+    "EURAUD.x": 66000.0,   # Euro / Australian Dollar
+    "EURCAD.x": 74000.0,   # Euro / Canadian Dollar
+    "EURCHF.x": 122000.0,   # Euro / Swiss Franc
+    "EURGBP.x": 134000.0,   # Euro / British Pound
+    "EURJPY.x": 700.0,    # Euro / Japanese Yen
+    "EURNZD.x": 60000.0,   # Euro / New Zealand Dollar
+    "EURUSD.x": 100000.0,   # Euro / US Dollar
     
     # GBP pairs
-    "GBPAUD": 66000.0,   # British Pound / Australian Dollar
-    "GBPCHF": 122000.0,   # British Pound / Swiss Franc
-    "GBPJPY": 700.0,    # British Pound / Japanese Yen
-    "GBPUSD": 100000.0,   # British Pound / US Dollar
-    "GBPCAD": 74000.0,   # British Pound / Canadian Dollar
-    "GBPNZD": 61000.0,   # British Pound / New Zealand Dollar
+    "GBPAUD.x": 66000.0,   # British Pound / Australian Dollar
+    "GBPCHF.x": 122000.0,   # British Pound / Swiss Franc
+    "GBPJPY.x": 700.0,    # British Pound / Japanese Yen
+    "GBPUSD.x": 100000.0,   # British Pound / US Dollar
+    "GBPCAD.x": 74000.0,   # British Pound / Canadian Dollar
+    "GBPNZD.x": 61000.0,   # British Pound / New Zealand Dollar
 
     # NZD pairs
-    "NZDCAD": 74000.0,    # New Zealand Dollar / Canadian Dollar
-    "NZDCHF": 122000.0,   # New Zealand Dollar / Swiss Franc
-    "NZDJPY": 700.0,    # New Zealand Dollar / Japanese Yen
-    "NZDUSD": 100000.0,   # New Zealand Dollar / US Dollar
+    "NZDCAD.x": 74000.0,    # New Zealand Dollar / Canadian Dollar
+    "NZDCHF.x": 122000.0,   # New Zealand Dollar / Swiss Franc
+    "NZDJPY.x": 700.0,    # New Zealand Dollar / Japanese Yen
+    "NZDUSD.x": 100000.0,   # New Zealand Dollar / US Dollar
     
     # USD pairs
-    "USDCAD": 74000.0,    # US Dollar / Canadian Dollar
-    "USDCHF": 122000.0,   # US Dollar / Swiss Franc
-    "USDJPY": 700.0,      # US Dollar / Japanese Yen
+    "USDCAD.x": 74000.0,    # US Dollar / Canadian Dollar
+    "USDCHF.x": 122000.0,   # US Dollar / Swiss Franc
+    "USDJPY.x": 700.0,      # US Dollar / Japanese Yen
     
     # Precious Metals
-    "XAUUSD": 100.0,      # Gold / US Dollar
+    "XAUUSD.x": 100.0,      # Gold / US Dollar
+    "USTEC.x": 1.0,      # US Tech 100 Index
+    "US2000.x": 1.0,      # US Small Cap 2000 Index
+    "NAT.GAS.x": 10000.0,      # Natural Gas
+    "XAGUSD.x": 5000.0,      # Silver / US Dollar
+    "BRENT.x": 1.0,      # Brent Oil
+    "US500.x": 1.0,      # US 500 Index
+    "SPX500.x": 1.0,      # S&P 500 Index
+    
     # Cryptocurrencies
-    "ADAUSD": 10000.0,       # $1 per full 1.00 move with 1 lot
-    "AVAXUSD": 100.0,      # $1 per full 1.00 move with 1 lot
-    "BCHUSD": 10.0,       # $1 per full 1.00 move with 1 lot
-    "BTCUSD": 1.0,       # $1 per full 1.00 move with 1 lot
-    "DOGEUSD": 100000.0,      # $1 per full 1.00 move with 1 lot
-    "ETHUSD": 1.0,       # $1 per full 1.00 move with 1 lot
-    "LINKUSD": 250.0,      # $1 per full 1.00 move with 1 lot
-    "LTCUSD": 100.0,       # $1 per full 1.00 move with 1 lot
-    "SOLUSD": 100.0,       # $1 per full 1.00 move with 1 lot
-    "XRPUSD": 50000.0,       # $1 per full 1.00 move with 1 lot
+    "ADAUSD.x": 10000.0,       # $1 per full 1.00 move with 1 lot
+    "AVAXUSD.x": 100.0,      # $1 per full 1.00 move with 1 lot
+    "BCHUSD.x": 10.0,       # $1 per full 1.00 move with 1 lot
+    "BTCUSD.x": 1.0,       # $1 per full 1.00 move with 1 lot
+    "DOGEUSD.x": 100000.0,      # $1 per full 1.00 move with 1 lot
+    "ETHUSD.x": 1.0,       # $1 per full 1.00 move with 1 lot
+    "LINKUSD.x": 250.0,      # $1 per full 1.00 move with 1 lot
+    "LTCUSD.x": 100.0,       # $1 per full 1.00 move with 1 lot
+    "SOLUSD.x": 100.0,       # $1 per full 1.00 move with 1 lot
+    "XRPUSD.x": 50000.0,       # $1 per full 1.00 move with 1 lot
     # Add other symbols as needed
 }
 

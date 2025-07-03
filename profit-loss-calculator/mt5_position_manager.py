@@ -154,6 +154,69 @@ def clear_cache():
     _last_order_fetch = 0
     logging.debug("Cache cleared")
 
+def calculate_profit_loss_percentage(potential_profit: float, potential_loss: float) -> Optional[float]:
+    """
+    Calculate the percentage difference between potential profit and potential loss.
+    Formula: ((potential_profit - abs(potential_loss)) / abs(potential_loss)) * 100
+    
+    Args:
+        potential_profit (float): The potential profit value
+        potential_loss (float): The potential loss value (typically negative)
+        
+    Returns:
+        Optional[float]: Percentage difference, or None if calculation not possible
+    """
+    try:
+        # Handle edge cases
+        if potential_loss == 0.0:
+            return None  # Cannot calculate percentage when loss is zero
+        
+        if potential_profit == 0.0 and potential_loss == 0.0:
+            return None  # Both values are zero
+        
+        # Use absolute value of potential_loss for calculation
+        abs_loss = abs(potential_loss)
+        
+        # Calculate percentage difference
+        percentage = ((potential_profit - abs_loss) / abs_loss) * 100
+        
+        return round(percentage, 2)
+        
+    except (ZeroDivisionError, TypeError, ValueError) as e:
+        logging.debug(f"Error calculating profit/loss percentage: {e}")
+        return None
+
+def calculate_risk_reward_ratio(potential_profit: float, potential_loss: float) -> Optional[float]:
+    """
+    Calculate the risk-reward ratio (potential_profit / abs(potential_loss)).
+    
+    Args:
+        potential_profit (float): The potential profit value
+        potential_loss (float): The potential loss value (typically negative)
+        
+    Returns:
+        Optional[float]: Risk-reward ratio, or None if calculation not possible
+    """
+    try:
+        # Handle edge cases
+        if potential_loss == 0.0:
+            return None  # Cannot calculate ratio when loss is zero
+        
+        if potential_profit == 0.0 and potential_loss == 0.0:
+            return None  # Both values are zero
+        
+        # Use absolute value of potential_loss for calculation
+        abs_loss = abs(potential_loss)
+        
+        # Calculate risk-reward ratio
+        ratio = potential_profit / abs_loss
+        
+        return round(ratio, 2)
+        
+    except (ZeroDivisionError, TypeError, ValueError) as e:
+        logging.debug(f"Error calculating risk-reward ratio: {e}")
+        return None
+
 def calculate_position_profit_loss() -> Dict[str, Any]:
     """
     Calculate profit and loss for all open positions.
@@ -243,6 +306,11 @@ def calculate_position_profit_loss() -> Dict[str, Any]:
                 total_potential_loss += potential_loss
                 total_potential_profit += potential_profit
                 
+                # Calculate percentage difference and risk-reward ratio for this position
+                profit_loss_percentage = calculate_profit_loss_percentage(potential_profit, potential_loss)
+                risk_reward_ratio = calculate_risk_reward_ratio(potential_profit, potential_loss)
+                profit_loss_difference = potential_profit - abs(potential_loss) if potential_loss != 0 else None
+                
                 # Store position details
                 position_detail = {
                     'ticket': position.ticket,
@@ -256,6 +324,9 @@ def calculate_position_profit_loss() -> Dict[str, Any]:
                     'current_pl': current_pl,
                     'potential_loss': potential_loss if potential_loss != 0 else None,
                     'potential_profit': potential_profit if potential_profit != 0 else None,
+                    'profit_loss_percentage': profit_loss_percentage,
+                    'risk_reward_ratio': risk_reward_ratio,
+                    'profit_loss_difference': profit_loss_difference,
                     'magic': getattr(position, 'magic', 0),
                     'comment': getattr(position, 'comment', ''),
                     'time': datetime.fromtimestamp(position.time).strftime('%Y-%m-%d %H:%M:%S') if hasattr(position, 'time') else None
@@ -267,11 +338,19 @@ def calculate_position_profit_loss() -> Dict[str, Any]:
                 logging.error(f"Error processing position {position.ticket}: {e}")
                 continue
         
+        # Calculate combined percentage difference and risk-reward ratio
+        combined_profit_loss_percentage = calculate_profit_loss_percentage(total_potential_profit, total_potential_loss)
+        combined_risk_reward_ratio = calculate_risk_reward_ratio(total_potential_profit, total_potential_loss)
+        combined_profit_loss_difference = total_potential_profit - abs(total_potential_loss) if total_potential_loss != 0 else None
+        
         result = {
             'total_positions': len(position_details),
             'total_current_pl': total_current_pl,
             'total_potential_loss': total_potential_loss,
-            'total_potential_profit': total_potential_profit,
+        'total_potential_profit': total_potential_profit,
+         'combined_profit_loss_percentage': calculate_profit_loss_percentage(total_potential_profit, total_potential_loss),
+         'combined_risk_reward_ratio': calculate_risk_reward_ratio(total_potential_profit, total_potential_loss),
+         'combined_profit_loss_difference': total_potential_profit - abs(total_potential_loss) if total_potential_loss != 0 else None,
             'positions': position_details
         }
         
@@ -375,6 +454,11 @@ def calculate_pending_order_profit_loss() -> Dict[str, Any]:
                 total_potential_loss += potential_loss
                 total_potential_profit += potential_profit
                 
+                # Calculate percentage difference and risk-reward ratio for this order
+                profit_loss_percentage = calculate_profit_loss_percentage(potential_profit, potential_loss)
+                risk_reward_ratio = calculate_risk_reward_ratio(potential_profit, potential_loss)
+                profit_loss_difference = potential_profit - abs(potential_loss) if potential_loss != 0 else None
+                
                 # Determine order type string
                 order_type_map = {
                     mt5.ORDER_TYPE_BUY_LIMIT: 'BUY_LIMIT',
@@ -399,6 +483,9 @@ def calculate_pending_order_profit_loss() -> Dict[str, Any]:
                     'tp': order.tp if order.tp > 0 else None,
                     'potential_loss': potential_loss if potential_loss != 0 else None,
                     'potential_profit': potential_profit if potential_profit != 0 else None,
+                    'profit_loss_percentage': profit_loss_percentage,
+                    'risk_reward_ratio': risk_reward_ratio,
+                    'profit_loss_difference': profit_loss_difference,
                     'magic': getattr(order, 'magic', 0),
                     'comment': getattr(order, 'comment', ''),
                     'time_setup': datetime.fromtimestamp(order.time_setup).strftime('%Y-%m-%d %H:%M:%S') if hasattr(order, 'time_setup') else None,
@@ -415,6 +502,9 @@ def calculate_pending_order_profit_loss() -> Dict[str, Any]:
             'total_orders': len(order_details),
             'total_potential_loss': total_potential_loss,
             'total_potential_profit': total_potential_profit,
+            'combined_profit_loss_percentage': calculate_profit_loss_percentage(total_potential_profit, total_potential_loss),
+            'combined_risk_reward_ratio': calculate_risk_reward_ratio(total_potential_profit, total_potential_loss),
+            'combined_profit_loss_difference': total_potential_profit - abs(total_potential_loss) if total_potential_loss != 0 else None,
             'orders': order_details
         }
         
@@ -463,6 +553,18 @@ def log_comprehensive_summary(position_data: Dict[str, Any], order_data: Dict[st
         logging.info(f"  Combined Potential Loss: ${combined_potential_loss:.2f}")
         logging.info(f"  Combined Potential Profit: ${combined_potential_profit:.2f}")
         
+        # Calculate and display combined percentage metrics
+        combined_profit_loss_percentage = calculate_profit_loss_percentage(combined_potential_profit, combined_potential_loss)
+        combined_risk_reward_ratio = calculate_risk_reward_ratio(combined_potential_profit, combined_potential_loss)
+        combined_profit_loss_difference = combined_potential_profit - abs(combined_potential_loss) if combined_potential_loss != 0 else None
+        
+        if combined_profit_loss_percentage is not None:
+            logging.info(f"  Profit/Loss Percentage: {combined_profit_loss_percentage:.2f}%")
+        if combined_risk_reward_ratio is not None:
+            logging.info(f"  Risk/Reward Ratio: {combined_risk_reward_ratio:.2f}")
+        if combined_profit_loss_difference is not None:
+            logging.info(f"  Profit/Loss Difference: ${combined_profit_loss_difference:.2f}")
+        
         # Log breakdown by category
         logging.info("\nBREAKDOWN BY CATEGORY:")
         logging.info(f"  Open Positions:")
@@ -479,7 +581,9 @@ def log_comprehensive_summary(position_data: Dict[str, Any], order_data: Dict[st
         # Log detailed position information
         if position_data.get('positions'):
             logging.info("\nOPEN POSITIONS DETAIL:")
-            for pos in position_data['positions']:
+            # Sort positions alphabetically by symbol name
+            sorted_positions = sorted(position_data['positions'], key=lambda x: x.get('symbol', ''))
+            for pos in sorted_positions:
                 logging.info(f"  Ticket {pos['ticket']} | {pos['symbol']} | {pos['type']} {pos['volume']} lots")
                 logging.info(f"    Open: {pos['price_open']:.5f} | Current: {pos['current_price']:.5f}")
                 if pos.get('sl'):
@@ -491,12 +595,22 @@ def log_comprehensive_summary(position_data: Dict[str, Any], order_data: Dict[st
                     logging.info(f"    Potential Loss: ${pos['potential_loss']:.2f}")
                 if pos.get('potential_profit'):
                     logging.info(f"    Potential Profit: ${pos['potential_profit']:.2f}")
+                
+                # Display percentage metrics for this position
+                if pos.get('profit_loss_percentage') is not None:
+                    logging.info(f"    Profit/Loss Percentage: {pos['profit_loss_percentage']:.2f}%")
+                if pos.get('risk_reward_ratio') is not None:
+                    logging.info(f"    Risk/Reward Ratio: {pos['risk_reward_ratio']:.2f}")
+                if pos.get('profit_loss_difference') is not None:
+                    logging.info(f"    Profit/Loss Difference: ${pos['profit_loss_difference']:.2f}")
                 logging.info("")
         
         # Log detailed order information
         if order_data.get('orders'):
             logging.info("PENDING ORDERS DETAIL:")
-            for order in order_data['orders']:
+            # Sort orders alphabetically by symbol name
+            sorted_orders = sorted(order_data['orders'], key=lambda x: x.get('symbol', ''))
+            for order in sorted_orders:
                 logging.info(f"  Ticket {order['ticket']} | {order['symbol']} | {order['type']} {order['volume']} lots")
                 logging.info(f"    Entry Price: {order['price_open']:.5f} | Current: {order['current_price']:.5f}")
                 if order.get('sl'):
@@ -507,6 +621,14 @@ def log_comprehensive_summary(position_data: Dict[str, Any], order_data: Dict[st
                     logging.info(f"    Potential Loss: ${order['potential_loss']:.2f}")
                 if order.get('potential_profit'):
                     logging.info(f"    Potential Profit: ${order['potential_profit']:.2f}")
+                
+                # Display percentage metrics for this order
+                if order.get('profit_loss_percentage') is not None:
+                    logging.info(f"    Profit/Loss Percentage: {order['profit_loss_percentage']:.2f}%")
+                if order.get('risk_reward_ratio') is not None:
+                    logging.info(f"    Risk/Reward Ratio: {order['risk_reward_ratio']:.2f}")
+                if order.get('profit_loss_difference') is not None:
+                    logging.info(f"    Profit/Loss Difference: ${order['profit_loss_difference']:.2f}")
                 logging.info("")
         
         # Log footer
@@ -536,7 +658,9 @@ def log_position_summary(position_data: Dict[str, Any], account_name: str = "Cur
         
         if position_data.get('positions'):
             logging.info("\nPosition Details:")
-            for pos in position_data['positions']:
+            # Sort positions alphabetically by symbol name
+            sorted_positions = sorted(position_data['positions'], key=lambda x: x.get('symbol', ''))
+            for pos in sorted_positions:
                 sl_str = f" SL:{pos['sl']:.5f}" if pos.get('sl') else ""
                 tp_str = f" TP:{pos['tp']:.5f}" if pos.get('tp') else ""
                 logging.info(f"  {pos['ticket']} | {pos['symbol']} {pos['type']} {pos['volume']} | P/L: ${pos['current_pl']:.2f}{sl_str}{tp_str}")

@@ -221,44 +221,27 @@ The system comes pre-configured with values for major pairs:
 
 ```python
 DOLLAR_PER_LOT_PER_PRICE_UNIT = {
-    # Major Forex Pairs (with .x suffix as used in actual config)
-    "EURUSD.x": 100000.0,
-    "GBPUSD.x": 100000.0,
-    "AUDUSD.x": 100000.0,
-    "NZDUSD.x": 100000.0,
-    "USDCAD.x": 74000.0,
-    "USDCHF.x": 122000.0,
-    "USDJPY.x": 700.0,
+    # Major Forex Pairs (pre-calculated)
+    "EURUSD": 100000.0,
+    "GBPUSD": 100000.0,
+    "AUDUSD": 100000.0,
+    "NZDUSD": 100000.0,
+    "USDCAD": 74000.0,
+    "USDCHF": 122000.0,
+    "USDJPY": 700.0,
     
     # Cross Pairs
-    "EURJPY.x": 700.0,
-    "GBPJPY.x": 700.0,
-    "EURGBP.x": 134000.0,
-    "AUDCAD.x": 74000.0,
-    "GBPCAD.x": 74000.0,
-    "GBPNZD.x": 61000.0,
+    "EURJPY": 700.0,
+    "GBPJPY": 700.0,
+    "EURGBP": 134000.0,
+    "AUDCAD": 74000.0,
     
-    # Precious Metals & Indices
-    "XAUUSD.x": 100.0,      # Gold
-    "XAGUSD.x": 5000.0,     # Silver
-    "US500.x": 1.0,         # US 500 Index
-    "USTEC.x": 1.0,         # US Tech 100 Index
-    "US2000.x": 1.0,        # US Small Cap 2000 Index
-    "SPX500.x": 1.0,        # S&P 500 Index
-    "BRENT.x": 1.0,         # Brent Oil
-    "NAT.GAS.x": 10000.0,   # Natural Gas
+    # Precious Metals
+    "XAUUSD": 100.0,  # Gold
     
     # Cryptocurrencies
-    "BTCUSD.x": 1.0,        # Bitcoin
-    "ETHUSD.x": 1.0,        # Ethereum
-    "ADAUSD.x": 10000.0,    # Cardano
-    "AVAXUSD.x": 100.0,     # Avalanche
-    "BCHUSD.x": 10.0,       # Bitcoin Cash
-    "DOGEUSD.x": 100000.0,  # Dogecoin
-    "LINKUSD.x": 250.0,     # Chainlink
-    "LTCUSD.x": 100.0,      # Litecoin
-    "SOLUSD.x": 100.0,      # Solana
-    "XRPUSD.x": 50000.0,    # Ripple
+    "BTCUSD": 1.0,
+    "ETHUSD": 1.0,
     # Add more symbols as needed
 }
 ```
@@ -444,13 +427,12 @@ The tool generates a comprehensive JSON file with detailed information:
 
 ### Core Modules
 
-- `profit_loss_calculator.py` - Main entry point, command-line interface, and multi-account processing logic
+- `profit_loss_calculator.py` - Main entry point and command-line interface
+- `account_processor.py` - Multi-account processing logic
 - `mt5_connection.py` - MT5 connection management
 - `mt5_position_manager.py` - Position and order data retrieval
 - `config.py` - Configuration settings and validation
-- `config_example.py` - Example configuration template with placeholders
 - `test_installation.py` - Installation and setup validation
-- `setup.py` - Setup and installation helper
 - `requirements.txt` - Python dependencies
 - `run_calculator.bat` - Windows batch file for easy execution
 
